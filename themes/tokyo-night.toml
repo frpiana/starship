@@ -14,6 +14,10 @@ $golang\
 $php\
 $python\
 $rlang\
+$haskell\
+$lua\
+$c\
+$cpp\
 [](fg:#465373 bg:#333c55)\
 $time\
 [ ](fg:#333c55)\
@@ -63,12 +67,38 @@ symbol = ""
 style = "bg:#465373"
 format = '[[ $symbol ($version) ](fg:#8997c5 bg:#465373)]($style)'
 
+[lua]
+symbol = "🌙"
+style = "bg:#465373"
+format = '[[ $symbol ($version) ](fg:#8997c5 bg:#465373)]($style)'
+detect_extensions = ["lua"]
+
 [python]
 symbol = "🐍"
 style = "bg:#465373"
-format = '[[ $symbol($version)($virtualenv)](fg:#8997c5 bg:#465373)]($style)'
+format = '[[ $symbol ($version) ($virtualenv) ](fg:#8997c5 bg:#465373)]($style)'
 detect_extensions = ["py"]
-python_binary = ["python, python3", "python2"]
+python_binary = ["python3"]
+
+[haskell]
+symbol = "" # icona haskell (nerd font)
+style = "bg:#465373"
+format = '[[ $symbol ($version) ](fg:#8997c5 bg:#465373)]($style)'
+detect_extensions = ["hs", "lhs"]
+detect_files = ["stack.yaml", "cabal.project"]
+disabled = false
+
+[c]
+symbol = ""
+style = "bg:#465373"
+format = '[[ $symbol ($version) ](fg:#8997c5 bg:#465373)]($style)'
+detect_extensions = ["c", "h"]
+
+[cmake]
+symbol = ""
+style = "bg:#465373"
+format = '[[ $symbol ](fg:#8997c5 bg:#465373)]($style)'
+detect_files = ["CMakeLists.txt"]
 
 # Fifth layer
 [time]
