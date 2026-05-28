@@ -18,6 +18,7 @@ $haskell\
 $lua\
 $c\
 $cpp\
+$cmake\
 [](fg:#465373 bg:#333c55)\
 $time\
 [ ](fg:#333c55)\
@@ -93,6 +94,18 @@ symbol = ""
 style = "bg:#465373"
 format = '[[ $symbol ($version) ](fg:#8997c5 bg:#465373)]($style)'
 detect_extensions = ["c", "h"]
+
+[cpp]
+symbol = ""
+style = "bg:#465373"
+format = '[[ $symbol ($version) ](fg:#8997c5 bg:#465373)]($style)'
+detect_extensions = ["cpp", "cc", "cxx", "hpp", "hh", "hxx"]
+
+[rlang]
+symbol = "📐"
+style = "bg:#465373"
+format = '[[ $symbol ($version) ](fg:#8997c5 bg:#465373)]($style)'
+detect_extensions = ["R", "Rd", "Rmd", "Rproj", "Rsx"]
 
 [cmake]
 symbol = ""
