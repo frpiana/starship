@@ -1,3 +1,9 @@
+# === Impostazioni globali (spostate da starship.toml, prima erano ignorate) ===
+add_newline = true
+scan_timeout = 50
+command_timeout = 5000
+follow_symlinks = true
+
 # Prompt sequence setting
 format = """
 [░▒▓](#a3aed2)\
@@ -17,7 +23,6 @@ $rlang\
 $haskell\
 $lua\
 $c\
-$cpp\
 $cmake\
 [](fg:#465373 bg:#333c55)\
 $time\
@@ -93,13 +98,7 @@ disabled = false
 symbol = ""
 style = "bg:#465373"
 format = '[[ $symbol ($version) ](fg:#8997c5 bg:#465373)]($style)'
-detect_extensions = ["c", "h"]
-
-[cpp]
-symbol = ""
-style = "bg:#465373"
-format = '[[ $symbol ($version) ](fg:#8997c5 bg:#465373)]($style)'
-detect_extensions = ["cpp", "cc", "cxx", "hpp", "hh", "hxx"]
+detect_extensions = ["c", "h", "cpp", "cc", "cxx", "hpp", "hh", "hxx"]
 
 [rlang]
 symbol = "📐"
@@ -119,3 +118,7 @@ disabled = false
 time_format = "%R" # Hour:Minute Format
 style = "bg:#333c55"
 format = '[[  $time ](fg:#7b8bbf bg:#333c55)]($style)'
+
+# Abilita il modulo shell (non presente nel format -> resta invisibile)
+[shell]
+disabled = false
