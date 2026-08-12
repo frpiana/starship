@@ -1,0 +1,125 @@
+# === Impostazioni globali (Starship legge un solo file: vivono qui in testa) ===
+add_newline = true
+scan_timeout = 50
+command_timeout = 5000
+follow_symlinks = true
+
+# Prompt sequence setting — pantone Tabby Matcha Latte (diurno)
+# cannella #8a5a36 → caramello #b06e2e → cappuccino #c9b8a5 → #e5d8c3 → #ece1cf
+format = """
+[░▒▓](#8a5a36)\
+[  ](fg:#f7efe3 bg:#8a5a36)\
+[](fg:#8a5a36 bg:#b06e2e)\
+$directory\
+[](fg:#b06e2e bg:#c9b8a5)\
+$git_branch\
+$git_status\
+[](fg:#c9b8a5 bg:#e5d8c3)\
+$nodejs\
+$rust\
+$golang\
+$php\
+$python\
+$rlang\
+$haskell\
+$lua\
+$c\
+$cmake\
+[](fg:#e5d8c3 bg:#ece1cf)\
+$time\
+[ ](fg:#ece1cf)\
+\n$character"""
+
+# Second layer
+[directory]
+style = "fg:#f7efe3 bg:#b06e2e"
+format = "[ $path ]($style)"
+truncation_length = 3
+truncation_symbol = "…/"
+
+[directory.substitutions]
+"Documents" = "󰈙 "
+"Downloads" = " "
+"Music" = " "
+"Pictures" = " "
+
+# third layer — branch in sakura scuro, leggibile sul cappuccino
+[git_branch]
+symbol = ""
+style = "bg:#c9b8a5"
+format = '[[ $symbol $branch ](fg:#9d3f68 bg:#c9b8a5)]($style)'
+
+[git_status]
+style = "bg:#c9b8a5"
+format = '[[($all_status$ahead_behind )](fg:#9d3f68 bg:#c9b8a5)]($style)'
+
+# Forth layer
+[nodejs]
+symbol = ""
+style = "bg:#e5d8c3"
+format = '[[ $symbol ($version) ](fg:#5a4a3b bg:#e5d8c3)]($style)'
+
+[rust]
+symbol = ""
+style = "bg:#e5d8c3"
+format = '[[ $symbol ($version) ](fg:#5a4a3b bg:#e5d8c3)]($style)'
+
+[golang]
+symbol = ""
+style = "bg:#e5d8c3"
+format = '[[ $symbol ($version) ](fg:#5a4a3b bg:#e5d8c3)]($style)'
+
+[php]
+symbol = ""
+style = "bg:#e5d8c3"
+format = '[[ $symbol ($version) ](fg:#5a4a3b bg:#e5d8c3)]($style)'
+
+[lua]
+symbol = "🌙"
+style = "bg:#e5d8c3"
+format = '[[ $symbol ($version) ](fg:#5a4a3b bg:#e5d8c3)]($style)'
+detect_extensions = ["lua"]
+
+[python]
+symbol = "🐍"
+style = "bg:#e5d8c3"
+format = '[[ $symbol ($version) ($virtualenv) ](fg:#5a4a3b bg:#e5d8c3)]($style)'
+detect_extensions = ["py"]
+python_binary = ["python3"]
+
+[haskell]
+symbol = "" # icona haskell (nerd font)
+style = "bg:#e5d8c3"
+format = '[[ $symbol ($version) ](fg:#5a4a3b bg:#e5d8c3)]($style)'
+detect_extensions = ["hs", "lhs"]
+detect_files = ["stack.yaml", "cabal.project"]
+disabled = false
+
+[c]
+symbol = ""
+style = "bg:#e5d8c3"
+format = '[[ $symbol ($version) ](fg:#5a4a3b bg:#e5d8c3)]($style)'
+detect_extensions = ["c", "h", "cpp", "cc", "cxx", "hpp", "hh", "hxx"]
+
+[rlang]
+symbol = "📐"
+style = "bg:#e5d8c3"
+format = '[[ $symbol ($version) ](fg:#5a4a3b bg:#e5d8c3)]($style)'
+detect_extensions = ["R", "Rd", "Rmd", "Rproj", "Rsx"]
+
+[cmake]
+symbol = ""
+style = "bg:#e5d8c3"
+format = '[[ $symbol ](fg:#5a4a3b bg:#e5d8c3)]($style)'
+detect_files = ["CMakeLists.txt"]
+
+# Fifth layer
+[time]
+disabled = false
+time_format = "%R" # Hour:Minute Format
+style = "bg:#ece1cf"
+format = '[[  $time ](fg:#8a7663 bg:#ece1cf)]($style)'
+
+# Abilita il modulo shell (non presente nel format -> resta invisibile)
+[shell]
+disabled = false

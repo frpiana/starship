@@ -1,0 +1,93 @@
+#!/bin/sh
+# theme — cambia tema a Ghostty, Starship, tmux e Neovim in un colpo solo.
+#
+# Uso:
+#   theme           elenca i temi disponibili e quello attivo
+#   theme <nome>    attiva il tema <nome>
+#
+# Ogni tema è una cartella in themes/<nome>/ con quattro file:
+#   starship.toml  ghostty.conf  tmux.conf  nvim.lua
+# Lo script aggiorna i link in active/ e ricarica (best effort) le app aperte.
+set -eu
+
+REPO=$(CDPATH= cd -- "$(dirname -- "$0")/.." && pwd)
+THEMES="$REPO/themes"
+ACTIVE="$REPO/active"
+
+current() { cat "$ACTIVE/THEME" 2>/dev/null || true; }
+
+list() {
+  cur=$(current)
+  echo "Temi disponibili:"
+  for d in "$THEMES"/*/; do
+    [ -d "$d" ] || continue
+    name=$(basename "$d")
+    if [ "$name" = "$cur" ]; then
+      echo "  * $name (attivo)"
+    else
+      echo "    $name"
+    fi
+  done
+}
+
+if [ "$#" -eq 0 ]; then
+  list
+  exit 0
+fi
+
+NAME=$1
+DIR="$THEMES/$NAME"
+if [ ! -d "$DIR" ]; then
+  echo "Tema '$NAME' non trovato." >&2
+  list >&2
+  exit 1
+fi
+
+mkdir -p "$ACTIVE"
+
+# Starship, tmux e Neovim leggono direttamente i link in active/
+ln -sf "$DIR/starship.toml" "$ACTIVE/starship.toml"
+ln -sf "$DIR/tmux.conf" "$ACTIVE/tmux.conf"
+ln -sf "$DIR/nvim.lua" "$ACTIVE/nvim.lua"
+
+# Ghostty: il config attivo è un file reale generato da base condivisa + colori
+# del tema (gli include relativi attraverso i symlink sono ambigui in Ghostty)
+cat "$REPO/ghostty/base.conf" "$DIR/ghostty.conf" > "$ACTIVE/ghostty.conf"
+
+printf '%s\n' "$NAME" > "$ACTIVE/THEME"
+echo "Tema attivo: $NAME"
+
+# --- Ricarica best-effort delle app già aperte ---
+
+# Starship rilegge la config a ogni prompt: basta un invio nel terminale.
+
+# tmux: ricarica la configurazione se il server è in esecuzione
+if command -v tmux >/dev/null 2>&1 && tmux has-session >/dev/null 2>&1; then
+  if tmux source-file ~/.config/tmux/tmux.conf >/dev/null 2>&1; then
+    echo "tmux: configurazione ricaricata"
+  fi
+fi
+
+# Neovim: applica il tema alle istanze in ascolto sul socket di default
+# (richiede lua/core/theme.lua nella config di nvim, vedi extras/nvim/)
+if command -v nvim >/dev/null 2>&1; then
+  me=${USER:-$(id -un)}
+  for sock in \
+    "${XDG_RUNTIME_DIR:-/nonexistent}"/nvim.*.0 \
+    "${TMPDIR:-/tmp}"/nvim."$me"/*/nvim.*.0 \
+    /tmp/nvim."$me"/*/nvim.*.0; do
+    [ -S "$sock" ] || continue
+    if nvim --server "$sock" --remote-expr 'v:lua.ThemeApply()' >/dev/null 2>&1; then
+      echo "nvim: tema applicato ($(basename "$sock"))"
+    fi
+  done
+fi
+
+# Ghostty (macOS): prova a ricaricare dal menu; in alternativa ⌘⇧,
+if [ "$(uname -s)" = "Darwin" ] && pgrep -xq Ghostty 2>/dev/null; then
+  if osascript -e 'tell application "System Events" to tell process "Ghostty" to click menu item "Reload Configuration" of menu 1 of menu bar item "Ghostty" of menu bar 1' >/dev/null 2>&1; then
+    echo "Ghostty: configurazione ricaricata"
+  else
+    echo "Ghostty: premi ⌘⇧, (menu Ghostty → Reload Configuration) per ricaricare"
+  fi
+fi
