@@ -1,7 +1,4 @@
 -- Applica il tema attivo scelto con lo script `theme` (repo starship).
--- Da copiare in ~/.config/nvim/lua/core/theme.lua e richiamare in init.lua
--- con: require("core.theme").apply()
---
 -- Il file active/nvim.lua restituisce:
 --   { colorscheme = "<nome>", setup = function() ... end }
 
@@ -48,6 +45,16 @@ vim.api.nvim_create_autocmd("FocusGained", {
     if read_name() ~= applied then
       M.apply()
     end
+  end,
+})
+
+-- L'applicazione in init.lua avviene presto: dashboard e ripristino della
+-- sessione possono scavalcare gli highlight derivati (es. bufferline).
+-- Riapplica a fine avvio e dopo ogni caricamento sessione, a bocce ferme.
+vim.api.nvim_create_autocmd({ "VimEnter", "SessionLoadPost" }, {
+  group = vim.api.nvim_create_augroup("ActiveThemeStartup", { clear = true }),
+  callback = function()
+    vim.schedule(M.apply)
   end,
 })
 
