@@ -1,0 +1,125 @@
+# === Impostazioni globali (Starship legge un solo file: vivono qui in testa) ===
+add_newline = true
+scan_timeout = 50
+command_timeout = 5000
+follow_symlinks = true
+
+# Prompt sequence setting — palette Catppuccin Mocha
+# lavender #b4befe → blue #89b4fa → surface2 #585b70 → surface1 #45475a → surface0 #313244
+format = """
+[░▒▓](#b4befe)\
+[  ](fg:#11111b bg:#b4befe)\
+[](fg:#b4befe bg:#89b4fa)\
+$directory\
+[](fg:#89b4fa bg:#585b70)\
+$git_branch\
+$git_status\
+[](fg:#585b70 bg:#45475a)\
+$nodejs\
+$rust\
+$golang\
+$php\
+$python\
+$rlang\
+$haskell\
+$lua\
+$c\
+$cmake\
+[](fg:#45475a bg:#313244)\
+$time\
+[ ](fg:#313244)\
+\n$character"""
+
+# Second layer
+[directory]
+style = "fg:#11111b bg:#89b4fa"
+format = "[ $path ]($style)"
+truncation_length = 3
+truncation_symbol = "…/"
+
+[directory.substitutions]
+"Documents" = "󰈙 "
+"Downloads" = " "
+"Music" = " "
+"Pictures" = " "
+
+# third layer
+[git_branch]
+symbol = ""
+style = "bg:#585b70"
+format = '[[ $symbol $branch ](fg:#cdd6f4 bg:#585b70)]($style)'
+
+[git_status]
+style = "bg:#585b70"
+format = '[[($all_status$ahead_behind )](fg:#cdd6f4 bg:#585b70)]($style)'
+
+# Forth layer
+[nodejs]
+symbol = ""
+style = "bg:#45475a"
+format = '[[ $symbol ($version) ](fg:#bac2de bg:#45475a)]($style)'
+
+[rust]
+symbol = ""
+style = "bg:#45475a"
+format = '[[ $symbol ($version) ](fg:#bac2de bg:#45475a)]($style)'
+
+[golang]
+symbol = ""
+style = "bg:#45475a"
+format = '[[ $symbol ($version) ](fg:#bac2de bg:#45475a)]($style)'
+
+[php]
+symbol = ""
+style = "bg:#45475a"
+format = '[[ $symbol ($version) ](fg:#bac2de bg:#45475a)]($style)'
+
+[lua]
+symbol = "🌙"
+style = "bg:#45475a"
+format = '[[ $symbol ($version) ](fg:#bac2de bg:#45475a)]($style)'
+detect_extensions = ["lua"]
+
+[python]
+symbol = "🐍"
+style = "bg:#45475a"
+format = '[[ $symbol ($version) ($virtualenv) ](fg:#bac2de bg:#45475a)]($style)'
+detect_extensions = ["py"]
+python_binary = ["python3"]
+
+[haskell]
+symbol = "" # icona haskell (nerd font)
+style = "bg:#45475a"
+format = '[[ $symbol ($version) ](fg:#bac2de bg:#45475a)]($style)'
+detect_extensions = ["hs", "lhs"]
+detect_files = ["stack.yaml", "cabal.project"]
+disabled = false
+
+[c]
+symbol = ""
+style = "bg:#45475a"
+format = '[[ $symbol ($version) ](fg:#bac2de bg:#45475a)]($style)'
+detect_extensions = ["c", "h", "cpp", "cc", "cxx", "hpp", "hh", "hxx"]
+
+[rlang]
+symbol = "📐"
+style = "bg:#45475a"
+format = '[[ $symbol ($version) ](fg:#bac2de bg:#45475a)]($style)'
+detect_extensions = ["R", "Rd", "Rmd", "Rproj", "Rsx"]
+
+[cmake]
+symbol = ""
+style = "bg:#45475a"
+format = '[[ $symbol ](fg:#bac2de bg:#45475a)]($style)'
+detect_files = ["CMakeLists.txt"]
+
+# Fifth layer
+[time]
+disabled = false
+time_format = "%R" # Hour:Minute Format
+style = "bg:#313244"
+format = '[[  $time ](fg:#a6adc8 bg:#313244)]($style)'
+
+# Abilita il modulo shell (non presente nel format -> resta invisibile)
+[shell]
+disabled = false
