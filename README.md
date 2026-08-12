@@ -73,9 +73,12 @@ ln -sf ~/.config/starship/active/ghostty.conf ~/.config/ghostty/config
 ## Temi
 
 - `tokyo-night` — il tema storico, armonizzato con i colori di Ghostty.
-- `catppuccin` — per ora la palette **Mocha ufficiale**; da ricalibrare con il
-  pantone personalizzato (per Neovim si usa `color_overrides` in
-  `themes/catppuccin/nvim.lua`).
+- `catppuccin` — la palette **Mocha ufficiale**, tenuta come riferimento.
+- `tabby-matcha` — pantone personalizzato derivato da Catppuccin: base caffè
+  tostato, testo crema, caramello tabby, verdi matcha e rosa sakura. Per
+  Neovim è costruito sul plugin catppuccin via `color_overrides`.
+- `tabby-matcha-latte` — versione diurna dello stesso pantone: fondo panna,
+  testo caffè, accenti scuriti per il contrasto su chiaro.
 
 Per creare un tema nuovo: copiare una cartella esistente in `themes/<nome>/` e
 cambiare i colori nei quattro file.
