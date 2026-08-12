@@ -29,7 +29,13 @@ tema, poi ricarica al volo le app già aperte: tmux via `source-file`, le
 istanze Neovim via `--remote-expr`, Ghostty via menu (o ⌘⇧, a mano). Starship
 si aggiorna da solo al prompt successivo.
 
-## Installazione
+## Installazione (macOS)
+
+I repo [zsh](https://github.com/frpiana/zsh), [tmux](https://github.com/frpiana/tmux)
+e [nvim](https://github.com/frpiana/nvim) sono già agganciati a questo sistema
+(`STARSHIP_CONFIG` e alias `theme` in zsh, `source-file` del tema attivo in tmux,
+`core/theme.lua` in nvim — la copia di riferimento è in `extras/nvim/`): basta
+clonarli in `~/.config/` e agganciare Ghostty.
 
 ```sh
 git clone git@github.com:frpiana/starship.git ~/.config/starship
@@ -38,37 +44,51 @@ mkdir -p ~/.config/ghostty
 ln -sf ~/.config/starship/active/ghostty.conf ~/.config/ghostty/config
 ```
 
-### Aggancio delle altre app (una tantum)
+Attenzione a un eventuale config preesistente in
+`~/Library/Application Support/com.mitchellh.ghostty/config`: su macOS Ghostty
+lo legge **in aggiunta** a quello XDG e vince sulle chiavi in conflitto —
+va rimosso o rinominato (es. `config.bak`).
 
-- **zsh** (`env.zsh` nel repo zsh):
+La ricarica automatica di Ghostty al cambio tema richiede il permesso di
+Accessibilità per il terminale (Impostazioni di Sistema → Privacy e Sicurezza);
+in alternativa, ⌘⇧, dentro Ghostty.
 
-  ```sh
-  export STARSHIP_CONFIG=~/.config/starship/active/starship.toml
-  ```
+## Installazione su Linux (Debian)
 
-  e per comodità, in `aliases.zsh`:
+Il sistema è portabile: stessi percorsi XDG, script POSIX. Passaggi:
 
-  ```sh
-  alias theme="$HOME/.config/starship/bin/theme"
-  ```
+```sh
+# 1. Dipendenze (starship dal suo installer ufficiale se non pacchettizzato)
+sudo apt install tmux zsh eza fonts-jetbrains-mono
+curl -sS https://starship.rs/install.sh | sh
 
-- **tmux** (`tmux.conf` nel repo tmux): sostituire la riga che carica
-  `themes/tokyo-night.tmux` con
+# 2. I quattro repo in ~/.config/
+git clone git@github.com:frpiana/starship.git ~/.config/starship
+git clone git@github.com:frpiana/zsh.git      ~/.config/zsh
+git clone git@github.com:frpiana/tmux.git     ~/.config/tmux
+git clone git@github.com:frpiana/nvim.git     ~/.config/nvim
 
-  ```
-  source-file -q ~/.config/starship/active/tmux.conf
-  ```
+# 3. Bootstrap di zsh (ZDOTDIR sta fuori dai repo)
+echo 'export ZDOTDIR="$HOME/.config/zsh"' > ~/.zshenv
 
-- **Neovim** (repo nvim): copiare `extras/nvim/lua/core/theme.lua` in
-  `lua/core/theme.lua`, sostituire `lua/plugins/colorscheme.lua` con
-  `extras/nvim/lua/plugins/colorscheme.lua` e aggiungere in coda a `init.lua`:
+# 4. Tema attivo + aggancio Ghostty (su Linux legge solo il percorso XDG)
+~/.config/starship/bin/theme tokyo-night
+mkdir -p ~/.config/ghostty
+ln -sf ~/.config/starship/active/ghostty.conf ~/.config/ghostty/config
+```
 
-  ```lua
-  require("core.theme").apply()
-  ```
+Differenze rispetto a macOS:
 
-  Per Catppuccin serve il plugin `catppuccin/nvim` (già dichiarato nel nuovo
-  `colorscheme.lua`; lazy.nvim lo installa al primo avvio).
+- **Neovim ≥ 0.10 obbligatorio** (la config usa `vim.uv` e lazy.nvim): il
+  pacchetto di Debian *stable* è troppo vecchio — usare trixie/backports,
+  l'AppImage ufficiale o `bob`.
+- **Font**: servono anche i glifi Nerd Font (JetBrainsMono Nerd Font e
+  Symbols Nerd Font Mono da [nerdfonts.com](https://www.nerdfonts.com), il
+  pacchetto `fonts-jetbrains-mono` da solo non basta per le icone).
+- **Ricarica di Ghostty**: il blocco AppleScript viene saltato (guard su
+  Darwin); la scorciatoia è **Ctrl+Shift+,**.
+- Le chiavi `macos-*` nella base Ghostty vengono ignorate senza errori;
+  `background-blur` dipende dal compositor (KDE sì, GNOME tipicamente no).
 
 ## Temi
 
