@@ -1,0 +1,82 @@
+# Configurazione Ghostty armonizzata con Tokyo Night e Starship
+
+# Colori principali
+background = #1a2130
+foreground = #c0cdd9
+
+# Caratteri
+font-family = JetBrainsMono Nerd Font
+font-size = 14
+font-feature = liga
+font-feature = calt
+font-feature = ss01
+font-feature = ss02
+font-feature = ss03
+
+# Colori per il cursore
+cursor-color = #769ff0
+cursor-text = #1a2130
+cursor-style = bar
+cursor-style-blink = true
+cursor-opacity = 0.9
+adjust-cursor-thickness = 2
+cursor-click-to-move = true
+
+# Colori per la selezione
+selection-background = #394260
+selection-foreground = #e3e5e5
+selection-invert-fg-bg = false
+
+# Padding interno della finestra
+window-padding-x = 12
+window-padding-y = 12
+window-theme = dark
+
+# Palette di colori ANSI ottimizzata per Tokyo Night
+palette = 0=#1a2130
+palette = 1=#e17287
+palette = 2=#8cbc6f
+palette = 3=#d0a863
+palette = 4=#769ff0
+palette = 5=#ac99e0
+palette = 6=#70bed9
+palette = 7=#a0a9cb
+palette = 8=#5a7390
+palette = 9=#e57b8e
+palette = 10=#9ac67d
+palette = 11=#d9b072
+palette = 12=#a3aed2
+palette = 13=#b8c0dc
+palette = 14=#7dcfff
+palette = 15=#e3e5e5
+
+# Estetica
+background-opacity = 0.95
+background-blur = 15
+unfocused-split-opacity = 0.85
+
+# Spaziatura migliorata
+adjust-cell-width = 1
+adjust-cell-height = 8%
+adjust-font-baseline = 1
+
+# Integrazioni macOS
+macos-option-as-alt = right
+macos-titlebar-proxy-icon = visible
+macos-window-shadow = true
+macos-titlebar-style = transparent
+
+# Configurazione clipboard
+clipboard-trim-trailing-spaces = true
+
+# Mappatura dei caratteri per simboli speciali
+font-codepoint-map = U+2500-U+259F=Symbols Nerd Font Mono
+
+# Feedback visivo
+resize-overlay = always
+resize-overlay-position = bottom-right
+mouse-hide-while-typing = true
+
+# Shell integration
+shell-integration = detect
+shell-integration-features = cursor,title

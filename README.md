@@ -5,6 +5,8 @@ Prompt Starship con tema **Tokyo Night**, armonizzato con i colori di Ghostty.
 ## Struttura
 
 - `themes/tokyo-night.toml` — **il file effettivamente letto da Starship**
+- `ghostty/config` — configurazione di Ghostty (colori, font, palette ANSI)
+  armonizzata con lo stesso tema Tokyo Night
 
 La variabile `STARSHIP_CONFIG` (impostata in `~/.config/zsh/env.zsh`) punta
 direttamente a questo tema. Starship legge un **solo** file e non ne fonde più
@@ -24,4 +26,12 @@ con `STARSHIP_CONFIG` sul tema, non veniva mai letto.
 
 ```sh
 git clone git@github.com:frpiana/starship.git ~/.config/starship
+```
+
+Per usare la configurazione di Ghostty versionata qui, crea un symlink al
+percorso che Ghostty legge di default (`$XDG_CONFIG_HOME/ghostty/config`):
+
+```sh
+mkdir -p ~/.config/ghostty
+ln -sf ~/.config/starship/ghostty/config ~/.config/ghostty/config
 ```
