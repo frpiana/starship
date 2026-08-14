@@ -1,0 +1,25 @@
+# Tokyo Night — schema colori Tabby (armonizzato con Starship)
+name: Tokyo Night
+foreground: '#c0cdd9'
+background: '#1a2130'
+cursor: '#769ff0'
+cursorAccent: '#1a2130'
+selection: '#394260'
+selectionForeground: '#e3e5e5'
+colors:
+  - '#1a2130'   # 0 black
+  - '#e17287'   # 1 red
+  - '#8cbc6f'   # 2 green
+  - '#d0a863'   # 3 yellow
+  - '#769ff0'   # 4 blue
+  - '#ac99e0'   # 5 magenta
+  - '#70bed9'   # 6 cyan
+  - '#a0a9cb'   # 7 white
+  - '#5a7390'   # 8 brightBlack
+  - '#e57b8e'   # 9 brightRed
+  - '#9ac67d'   # 10 brightGreen
+  - '#d9b072'   # 11 brightYellow
+  - '#a3aed2'   # 12 brightBlue
+  - '#b8c0dc'   # 13 brightMagenta
+  - '#7dcfff'   # 14 brightCyan
+  - '#e3e5e5'   # 15 brightWhite
