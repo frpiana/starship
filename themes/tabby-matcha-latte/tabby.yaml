@@ -1,0 +1,28 @@
+# Tabby Matcha Latte — schema colori Tabby (versione diurna)
+# Fondo panna, testo caffè, accenti scuriti per il contrasto su chiaro.
+# NB: la palette estesa 16–21 di Ghostty non è rappresentabile
+# (lo schema Tabby ha esattamente 16 colori ANSI).
+name: Tabby Matcha Latte
+foreground: '#3a2c21'
+background: '#f3ead9'
+cursor: '#b5537d'
+cursorAccent: '#f3ead9'
+selection: '#c9b8a5'
+selectionForeground: '#3a2c21'
+colors:
+  - '#e5d8c3'   # 0 black
+  - '#b04a5e'   # 1 red
+  - '#61833a'   # 2 green
+  - '#9a7828'   # 3 yellow
+  - '#4f6d80'   # 4 blue
+  - '#b5537d'   # 5 magenta
+  - '#3f7d68'   # 6 cyan
+  - '#6b5847'   # 7 white
+  - '#c9b8a5'   # 8 brightBlack
+  - '#98374b'   # 9 brightRed
+  - '#4f7028'   # 10 brightGreen
+  - '#7f621d'   # 11 brightYellow
+  - '#3d5a6d'   # 12 brightBlue
+  - '#9d3f68'   # 13 brightMagenta
+  - '#2f6b56'   # 14 brightCyan
+  - '#3a2c21'   # 15 brightWhite

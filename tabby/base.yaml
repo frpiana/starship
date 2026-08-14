@@ -1,0 +1,40 @@
+# Base condivisa di Tabby: tutte le impostazioni indipendenti dal tema.
+# Non viene letta direttamente: bin/theme genera active/tabby.yaml accodando
+# a questo file lo schema colori del tema (themes/<tema>/tabby.yaml) e copia
+# il risultato nelle cartelle di config di Tabby esistenti.
+#
+# NB: Tabby riscrive il proprio config.yaml a ogni modifica fatta dalla UI
+# delle impostazioni: quelle modifiche vengono sovrascritte al cambio tema
+# successivo. Le personalizzazioni durevoli vanno fatte QUI (stesso principio
+# "config as code" di ghostty/base.conf). Per lo stesso motivo niente vault né
+# config cifrata: non sopravviverebbero alla rigenerazione.
+
+version: 1
+
+appearance:
+  theme: Follow the color scheme   # la UI dell'app segue lo schema del terminale
+  frame: thin
+  tabsLocation: top
+  opacity: 0.95                    # come background-opacity di Ghostty (su Linux dipende dal compositor)
+  colorSchemeMode: dark            # ininfluente: dark e light ricevono lo stesso schema
+
+enableAnalytics: false
+enableWelcomeTab: false
+enableAutomaticUpdates: false      # su Debian gli aggiornamenti passano dal .deb
+recoverTabs: true
+hideTray: false
+
+# Sezione terminale — DEVE restare l'ULTIMA sezione del file: bin/theme accoda
+# qui sotto colorScheme/lightColorScheme del tema attivo (indentati di 2 spazi).
+terminal:
+  font: JetBrainsMono Nerd Font
+  fontSize: 14
+  ligatures: true
+  fallbackFont: Symbols Nerd Font Mono   # come font-codepoint-map di Ghostty
+  cursor: beam                           # come cursor-style = bar
+  cursorBlink: true
+  bell: 'off'
+  rightClick: menu
+  copyOnSelect: false
+  scrollbackLines: 25000
+  trimWhitespaceOnPaste: true            # come clipboard-trim-trailing-spaces

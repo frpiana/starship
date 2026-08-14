@@ -1,0 +1,25 @@
+# Catppuccin Mocha — schema colori Tabby
+name: Catppuccin Mocha
+foreground: '#cdd6f4'
+background: '#1e1e2e'
+cursor: '#f5e0dc'
+cursorAccent: '#1e1e2e'
+selection: '#353749'
+selectionForeground: '#cdd6f4'
+colors:
+  - '#45475a'   # 0 black
+  - '#f38ba8'   # 1 red
+  - '#a6e3a1'   # 2 green
+  - '#f9e2af'   # 3 yellow
+  - '#89b4fa'   # 4 blue
+  - '#f5c2e7'   # 5 magenta
+  - '#94e2d5'   # 6 cyan
+  - '#bac2de'   # 7 white
+  - '#585b70'   # 8 brightBlack
+  - '#f38ba8'   # 9 brightRed
+  - '#a6e3a1'   # 10 brightGreen
+  - '#f9e2af'   # 11 brightYellow
+  - '#89b4fa'   # 12 brightBlue
+  - '#f5c2e7'   # 13 brightMagenta
+  - '#94e2d5'   # 14 brightCyan
+  - '#a6adc8'   # 15 brightWhite

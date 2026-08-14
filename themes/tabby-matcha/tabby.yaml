@@ -1,0 +1,28 @@
+# Tabby Matcha — schema colori Tabby
+# Base caffè tostato, testo crema, caramello tabby, matcha e sakura.
+# NB: la palette estesa 16–21 di Ghostty non è rappresentabile
+# (lo schema Tabby ha esattamente 16 colori ANSI).
+name: Tabby Matcha
+foreground: '#f2e5d5'
+background: '#221a15'
+cursor: '#e8a3b8'
+cursorAccent: '#221a15'
+selection: '#57443f'
+selectionForeground: '#f2e5d5'
+colors:
+  - '#453629'   # 0 black
+  - '#d97583'   # 1 red
+  - '#9dbf7a'   # 2 green
+  - '#e8c98a'   # 3 yellow
+  - '#9db4c0'   # 4 blue
+  - '#e8a3b8'   # 5 magenta
+  - '#8fc6b0'   # 6 cyan
+  - '#e3d5c1'   # 7 white
+  - '#57443f'   # 8 brightBlack
+  - '#e58898'   # 9 brightRed
+  - '#aed188'   # 10 brightGreen
+  - '#f0d69c'   # 11 brightYellow
+  - '#aac4d4'   # 12 brightBlue
+  - '#f0b3d2'   # 13 brightMagenta
+  - '#a1d8c2'   # 14 brightCyan
+  - '#f7efe3'   # 15 brightWhite
