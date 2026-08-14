@@ -5,8 +5,8 @@
 #   theme           elenca i temi disponibili e quello attivo
 #   theme <nome>    attiva il tema <nome>
 #
-# Ogni tema è una cartella in themes/<nome>/ con cinque file:
-#   starship.toml  ghostty.conf  tabby.yaml  tmux.conf  nvim.lua
+# Ogni tema è una cartella in themes/<nome>/ con sei file:
+#   starship.toml  ghostty.conf  kitty.conf  tabby.yaml  tmux.conf  nvim.lua
 # Lo script aggiorna i link in active/ e ricarica (best effort) le app aperte.
 set -eu
 
@@ -45,10 +45,14 @@ fi
 
 mkdir -p "$ACTIVE"
 
-# Starship, tmux e Neovim leggono direttamente i link in active/
+# Starship, tmux, Neovim e kitty leggono direttamente i link in active/
+# (il kitty.conf del repo kitty fa `include` del link)
 ln -sf "$DIR/starship.toml" "$ACTIVE/starship.toml"
 ln -sf "$DIR/tmux.conf" "$ACTIVE/tmux.conf"
 ln -sf "$DIR/nvim.lua" "$ACTIVE/nvim.lua"
+if [ -f "$DIR/kitty.conf" ]; then
+  ln -sf "$DIR/kitty.conf" "$ACTIVE/kitty.conf"
+fi
 
 # Ghostty: il config attivo è un file reale generato da base condivisa + colori
 # del tema (gli include relativi attraverso i symlink sono ambigui in Ghostty)
@@ -80,6 +84,12 @@ if command -v tmux >/dev/null 2>&1 && tmux has-session >/dev/null 2>&1; then
   if tmux source-file ~/.config/tmux/tmux.conf >/dev/null 2>&1; then
     echo "tmux: configurazione ricaricata"
   fi
+fi
+
+# kitty: SIGUSR1 fa ricaricare la configurazione (include del tema compreso)
+# a tutte le istanze aperte (kitty >= 0.23)
+if pkill -USR1 -x kitty 2>/dev/null; then
+  echo "kitty: configurazione ricaricata"
 fi
 
 # Neovim: applica il tema alle istanze in ascolto sul socket di default

@@ -12,28 +12,32 @@ theme catppuccin   # attiva Catppuccin ovunque
 ## Struttura
 
 ```
-themes/<nome>/          un tema = una cartella con cinque file
+themes/<nome>/          un tema = una cartella con sei file
   starship.toml           prompt Starship (incluse le impostazioni globali)
   ghostty.conf            colori Ghostty (il terminale su macOS)
-  tabby.yaml              schema colori Tabby (il terminale su Debian)
+  kitty.conf              colori kitty (il terminale su Debian)
+  tabby.yaml              schema colori Tabby (terminale alternativo)
   tmux.conf               status bar e bordi tmux
   nvim.lua                colorscheme Neovim ({ colorscheme, setup })
 ghostty/base.conf       impostazioni Ghostty indipendenti dal tema (font, padding…)
 tabby/base.yaml         impostazioni Tabby indipendenti dal tema
+                        (la base di kitty vive nel repo kitty, come per tmux)
 bin/theme               lo script che cambia tema
 active/                 stato locale (gitignorato), generato da bin/theme
 extras/nvim/            file pronti da copiare nel repo nvim
 ```
 
-`bin/theme <nome>` aggiorna i link in `active/` (per Starship, tmux e Neovim),
-genera `active/ghostty.conf` concatenando `ghostty/base.conf` con i colori del
-tema e `active/tabby.yaml` iniettando lo schema del tema in `tabby/base.yaml`
-(copiato poi nelle cartelle di config di Tabby esistenti — vedi il
-[repo tabby](https://github.com/frpiana/tabby)), poi ricarica al volo le app
-già aperte: tmux via `source-file`, le istanze Neovim via `--remote-expr`,
-Ghostty via menu (o ⌘⇧, a mano). Starship si aggiorna da solo al prompt
-successivo. **Tabby è l'eccezione: non rilegge il config dall'esterno, va
-riavviato dopo il cambio tema.**
+`bin/theme <nome>` aggiorna i link in `active/` (per Starship, tmux, Neovim e
+kitty — il `kitty.conf` del [repo kitty](https://github.com/frpiana/kitty) fa
+`include` del link), genera `active/ghostty.conf` concatenando
+`ghostty/base.conf` con i colori del tema e `active/tabby.yaml` iniettando lo
+schema del tema in `tabby/base.yaml` (copiato poi nelle cartelle di config di
+Tabby esistenti — vedi il [repo tabby](https://github.com/frpiana/tabby)), poi
+ricarica al volo le app già aperte: tmux via `source-file`, kitty via
+`SIGUSR1`, le istanze Neovim via `--remote-expr`, Ghostty via menu (o ⌘⇧, a
+mano). Starship si aggiorna da solo al prompt successivo. **Tabby è
+l'eccezione: non rilegge il config dall'esterno, va riavviato dopo il cambio
+tema.**
 
 ## Installazione (macOS)
 
@@ -65,15 +69,16 @@ Il sistema è portabile: stessi percorsi XDG, script POSIX. Passaggi:
 
 ```sh
 # 1. Dipendenze (starship dal suo installer ufficiale se non pacchettizzato)
-sudo apt install tmux zsh eza fonts-jetbrains-mono
+sudo apt install kitty tmux zsh eza fonts-jetbrains-mono
 curl -sS https://starship.rs/install.sh | sh
 
-# 2. I repo in ~/.config/ (tabby è anche la config dir di Tabby su Linux)
+# 2. I repo in ~/.config/ (kitty e tabby sono anche le config dir delle app)
 git clone git@github.com:frpiana/starship.git ~/.config/starship
 git clone git@github.com:frpiana/zsh.git      ~/.config/zsh
 git clone git@github.com:frpiana/tmux.git     ~/.config/tmux
 git clone git@github.com:frpiana/nvim.git     ~/.config/nvim
-git clone git@github.com:frpiana/tabby.git    ~/.config/tabby
+git clone git@github.com:frpiana/kitty.git    ~/.config/kitty
+git clone git@github.com:frpiana/tabby.git    ~/.config/tabby   # opzionale
 
 # 3. Bootstrap di zsh (ZDOTDIR sta fuori dai repo)
 echo 'export ZDOTDIR="$HOME/.config/zsh"' > ~/.zshenv
@@ -86,12 +91,16 @@ ln -sf ~/.config/starship/active/ghostty.conf ~/.config/ghostty/config
 
 Differenze rispetto a macOS:
 
-- **Il terminale è Tabby, non Ghostty**: con il repo
-  [tabby](https://github.com/frpiana/tabby) clonato in `~/.config/tabby` non
-  serve alcun aggancio — `bin/theme` scrive direttamente
-  `~/.config/tabby/config.yaml` (base + schema del tema). Dopo il cambio tema
-  Tabby va riavviato. Il passo 4 con Ghostty resta valido solo se Ghostty è
-  installato anche su Linux.
+- **Il terminale è kitty, non Ghostty**: con il repo
+  [kitty](https://github.com/frpiana/kitty) clonato in `~/.config/kitty` non
+  serve alcun aggancio — il suo `kitty.conf` (versionato) fa `include` di
+  `../starship/active/kitty.conf` e `bin/theme` ricarica kitty al volo via
+  `SIGUSR1`. Il passo 4 con Ghostty resta valido solo se Ghostty è installato
+  anche su Linux.
+- **Tabby** (terminale alternativo, repo
+  [tabby](https://github.com/frpiana/tabby) in `~/.config/tabby`): `bin/theme`
+  scrive direttamente `~/.config/tabby/config.yaml` (base + schema del tema);
+  dopo il cambio tema Tabby va riavviato.
 - **Neovim ≥ 0.10 obbligatorio** (la config usa `vim.uv` e lazy.nvim): il
   pacchetto di Debian *stable* è troppo vecchio — usare trixie/backports,
   l'AppImage ufficiale o `bob`.
@@ -114,7 +123,7 @@ Differenze rispetto a macOS:
   testo caffè, accenti scuriti per il contrasto su chiaro.
 
 Per creare un tema nuovo: copiare una cartella esistente in `themes/<nome>/` e
-cambiare i colori nei cinque file.
+cambiare i colori nei sei file.
 
 ## Note
 
