@@ -101,9 +101,11 @@ Differenze rispetto a macOS:
   [tabby](https://github.com/frpiana/tabby) in `~/.config/tabby`): `bin/theme`
   scrive direttamente `~/.config/tabby/config.yaml` (base + schema del tema);
   dopo il cambio tema Tabby va riavviato.
-- **Neovim ≥ 0.10 obbligatorio** (la config usa `vim.uv` e lazy.nvim): il
-  pacchetto di Debian *stable* è troppo vecchio — usare trixie/backports,
-  l'AppImage ufficiale o `bob`.
+- **Neovim ≥ 0.11 obbligatorio** (la config usa `vim.lsp.config` e il branch
+  `main` di nvim-treesitter): il pacchetto apt di trixie è fermo a 0.10 e il
+  backport è stato rifiutato — installare il tarball ufficiale in `/opt` (o
+  usare `bob`). Passi dettagliati e pacchetti apt necessari nel
+  [README del repo nvim](https://github.com/frpiana/nvim).
 - **Font**: servono anche i glifi Nerd Font (JetBrainsMono Nerd Font e
   Symbols Nerd Font Mono da [nerdfonts.com](https://www.nerdfonts.com), il
   pacchetto `fonts-jetbrains-mono` da solo non basta per le icone).
