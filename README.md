@@ -41,7 +41,8 @@ tema.**
 
 ## Installazione (macOS)
 
-I repo [zsh](https://github.com/frpiana/zsh), [tmux](https://github.com/frpiana/tmux)
+I repo [zsh](https://github.com/frpiana/zsh) (su Debian il suo gemello
+[bash](https://github.com/frpiana/bash)), [tmux](https://github.com/frpiana/tmux)
 e [nvim](https://github.com/frpiana/nvim) sono già agganciati a questo sistema
 (`STARSHIP_CONFIG` e alias `theme` in zsh, `source-file` del tema attivo in tmux,
 `core/theme.lua` in nvim — la copia di riferimento è in `extras/nvim/`): basta
@@ -74,27 +75,30 @@ curl -sS https://starship.rs/install.sh | sh
 
 # 2. I repo in ~/.config/ (kitty e tabby sono anche le config dir delle app)
 git clone git@github.com:frpiana/starship.git ~/.config/starship
-git clone git@github.com:frpiana/zsh.git      ~/.config/zsh
+git clone git@github.com:frpiana/bash.git     ~/.config/bash   # shell su Debian
+git clone git@github.com:frpiana/zsh.git      ~/.config/zsh    # solo se si passa a zsh
 git clone git@github.com:frpiana/tmux.git     ~/.config/tmux
 git clone git@github.com:frpiana/nvim.git     ~/.config/nvim
 git clone git@github.com:frpiana/kitty.git    ~/.config/kitty
 git clone git@github.com:frpiana/tabby.git    ~/.config/tabby   # opzionale
 
-# 3. Bootstrap di zsh: ZDOTDIR sta fuori dai repo, e zsh va reso shell di login.
-#    Su Debian la shell di default è bash: senza chsh il terminale apre bash,
-#    .zshrc non viene mai letto e il prompt Starship non compare (prompt spoglio,
-#    senza alcun errore a video). Su macOS zsh è già la shell di default,
-#    ed è per questo che là il passo non serve.
-cat > ~/.zshenv <<'EOF'
-export ZDOTDIR="$HOME/.config/zsh"
-export XDG_CONFIG_HOME="$HOME/.config"
-export XDG_DATA_HOME="$HOME/.local/share"
-export XDG_CACHE_HOME="$HOME/.cache"
-export LANG=en_US.UTF-8
-export LC_ALL=en_US.UTF-8
-EOF
-sudo sed -i 's/^# en_US.UTF-8/en_US.UTF-8/' /etc/locale.gen && sudo locale-gen
-chsh -s "$(command -v zsh)"   # richiede logout/login per avere effetto
+# 3. Aggancio della shell. Il prompt Starship vive nel file di avvio della
+#    shell: se quello non viene letto, il prompt resta spoglio SENZA errori.
+#    Su Debian la shell di login resta bash, quindi si usa il repo bash:
+echo '[ -f "$HOME/.config/bash/bashrc" ] && . "$HOME/.config/bash/bashrc"' > ~/.bashrc
+echo '[ -f "$HOME/.config/bash/bash_profile" ] && . "$HOME/.config/bash/bash_profile"' > ~/.bash_profile
+
+#    In alternativa, per usare zsh anche su Debian, il repo zsh + chsh:
+#      cat > ~/.zshenv <<'ZE'
+#      export ZDOTDIR="$HOME/.config/zsh"
+#      export XDG_CONFIG_HOME="$HOME/.config"
+#      export XDG_DATA_HOME="$HOME/.local/share"
+#      export XDG_CACHE_HOME="$HOME/.cache"
+#      export LANG=en_US.UTF-8
+#      export LC_ALL=en_US.UTF-8
+#      ZE
+#      sudo sed -i 's/^# en_US.UTF-8/en_US.UTF-8/' /etc/locale.gen && sudo locale-gen
+#      chsh -s "$(command -v zsh)"   # richiede logout/login
 
 # 4. Tema attivo + aggancio Ghostty (su Linux legge solo il percorso XDG)
 ~/.config/starship/bin/theme tokyo-night
@@ -104,22 +108,21 @@ ln -sf ~/.config/starship/active/ghostty.conf ~/.config/ghostty/config
 
 Differenze rispetto a macOS:
 
-- **La shell di login va cambiata a mano**: su macOS zsh è già il default, su
-  Debian no. E' la causa più comune di "Starship non funziona su Linux": il
-  prompt resta quello di bash (`user@host:~$`) e non compare **nessun errore**,
-  perchè non è Starship a fallire — è `~/.config/zsh/.zshrc` a non essere mai
-  letto. Diagnosi in una riga:
+- **La shell non è la stessa**: su macOS il prompt Starship è agganciato a zsh
+  (repo [zsh](https://github.com/frpiana/zsh)), su Debian a bash (repo
+  [bash](https://github.com/frpiana/bash)) — Starship supporta entrambe
+  nativamente, quindi non serve alcun `chsh`. Quello che serve è agganciare i
+  file di avvio della shell giusta: senza, il prompt resta quello di bash
+  (`user@host:~$`) e non compare **nessun errore**, perché non è Starship a
+  fallire — è il suo `init` a non essere mai eseguito. Diagnosi in una riga:
 
   ```sh
   echo "shell=$0  ZDOTDIR=${ZDOTDIR:-VUOTO}"; command -v starship
   ```
 
-  `shell=bash` -> manca il `chsh` del passo 3; `ZDOTDIR` vuoto -> manca
-  `~/.zshenv`; `starship` senza percorso -> binario non installato. In
-  alternativa al `chsh` (o per provare senza cambiare la shell di sistema) si
-  può aggiungere `shell /usr/bin/zsh` a `~/.config/kitty/kitty.conf`, ma il
-  `chsh` resta la strada giusta: vale anche per tmux, SSH e i terminali diversi
-  da kitty.
+  `shell=bash` → serve il repo bash agganciato come al passo 3 (oppure il
+  `chsh` a zsh); `shell=zsh` con `ZDOTDIR` vuoto → manca `~/.zshenv`;
+  `starship` senza percorso → binario non installato.
 - **Il terminale è kitty, non Ghostty**: con il repo
   [kitty](https://github.com/frpiana/kitty) clonato in `~/.config/kitty` non
   serve alcun aggancio — il suo `kitty.conf` (versionato) fa `include` di
