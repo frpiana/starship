@@ -80,8 +80,21 @@ git clone git@github.com:frpiana/nvim.git     ~/.config/nvim
 git clone git@github.com:frpiana/kitty.git    ~/.config/kitty
 git clone git@github.com:frpiana/tabby.git    ~/.config/tabby   # opzionale
 
-# 3. Bootstrap di zsh (ZDOTDIR sta fuori dai repo)
-echo 'export ZDOTDIR="$HOME/.config/zsh"' > ~/.zshenv
+# 3. Bootstrap di zsh: ZDOTDIR sta fuori dai repo, e zsh va reso shell di login.
+#    Su Debian la shell di default è bash: senza chsh il terminale apre bash,
+#    .zshrc non viene mai letto e il prompt Starship non compare (prompt spoglio,
+#    senza alcun errore a video). Su macOS zsh è già la shell di default,
+#    ed è per questo che là il passo non serve.
+cat > ~/.zshenv <<'EOF'
+export ZDOTDIR="$HOME/.config/zsh"
+export XDG_CONFIG_HOME="$HOME/.config"
+export XDG_DATA_HOME="$HOME/.local/share"
+export XDG_CACHE_HOME="$HOME/.cache"
+export LANG=en_US.UTF-8
+export LC_ALL=en_US.UTF-8
+EOF
+sudo sed -i 's/^# en_US.UTF-8/en_US.UTF-8/' /etc/locale.gen && sudo locale-gen
+chsh -s "$(command -v zsh)"   # richiede logout/login per avere effetto
 
 # 4. Tema attivo + aggancio Ghostty (su Linux legge solo il percorso XDG)
 ~/.config/starship/bin/theme tokyo-night
@@ -91,6 +104,22 @@ ln -sf ~/.config/starship/active/ghostty.conf ~/.config/ghostty/config
 
 Differenze rispetto a macOS:
 
+- **La shell di login va cambiata a mano**: su macOS zsh è già il default, su
+  Debian no. E' la causa più comune di "Starship non funziona su Linux": il
+  prompt resta quello di bash (`user@host:~$`) e non compare **nessun errore**,
+  perchè non è Starship a fallire — è `~/.config/zsh/.zshrc` a non essere mai
+  letto. Diagnosi in una riga:
+
+  ```sh
+  echo "shell=$0  ZDOTDIR=${ZDOTDIR:-VUOTO}"; command -v starship
+  ```
+
+  `shell=bash` -> manca il `chsh` del passo 3; `ZDOTDIR` vuoto -> manca
+  `~/.zshenv`; `starship` senza percorso -> binario non installato. In
+  alternativa al `chsh` (o per provare senza cambiare la shell di sistema) si
+  può aggiungere `shell /usr/bin/zsh` a `~/.config/kitty/kitty.conf`, ma il
+  `chsh` resta la strada giusta: vale anche per tmux, SSH e i terminali diversi
+  da kitty.
 - **Il terminale è kitty, non Ghostty**: con il repo
   [kitty](https://github.com/frpiana/kitty) clonato in `~/.config/kitty` non
   serve alcun aggancio — il suo `kitty.conf` (versionato) fa `include` di
